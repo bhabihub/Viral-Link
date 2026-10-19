@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#101018">
+<title>Bhabihub | Video Hub</title>
+<style>
+:root{color-scheme:dark;--bg:#0d0d13;--panel:#171720;--text:#f6f6fb;--muted:#a7a7b8;--accent:#ff3f68;--border:rgba(255,255,255,.1)}
+*{box-sizing:border-box}body{margin:0;font-family:system-ui,Arial,sans-serif;background:radial-gradient(circle at top right,#292033,transparent 36%),var(--bg);color:var(--text);min-height:100vh}
+header{position:sticky;top:0;background:rgba(13,13,19,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);z-index:2}
+.nav,main,footer{max-width:1080px;margin:auto;padding-left:18px;padding-right:18px}.nav{padding-top:15px;padding-bottom:15px;display:flex;justify-content:space-between;align-items:center}
+.brand{font-size:1.35rem;font-weight:850}.brand span{color:var(--accent)}.tag,footer,.muted{color:var(--muted)}
+main{padding-top:28px;padding-bottom:42px}.hero{padding:26px;border:1px solid var(--border);border-radius:22px;background:linear-gradient(125deg,rgba(255,63,104,.17),rgba(255,255,255,.025));margin-bottom:22px}
+h1{font-size:clamp(1.7rem,5vw,2.7rem);margin:0 0 8px;letter-spacing:-.04em}.hero p{margin:0;color:var(--muted);line-height:1.6}
+.tools{display:flex;flex-wrap:wrap;gap:9px;margin:20px 0}input{flex:1 1 200px;min-width:0;padding:12px 14px;border:1px solid var(--border);border-radius:12px;background:var(--panel);color:var(--text);font:inherit}
+button{padding:11px 14px;border:1px solid var(--border);border-radius:12px;background:var(--panel);color:var(--text);font:inherit;cursor:pointer}button.active{background:var(--accent);border-color:var(--accent)}
+.head{display:flex;justify-content:space-between;align-items:center;margin:24px 0 14px;gap:10px}.head h2{font-size:1.15rem;margin:0}.head span{font-size:.85rem;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.card{overflow:hidden;border:1px solid var(--border);border-radius:17px;background:var(--panel)}
+.thumb{aspect-ratio:16/9;display:grid;place-items:center;position:relative;background:linear-gradient(135deg,#402238,#20203a 60%,#18333a);font-size:2.8rem}
+.thumb:after{content:"DEMO";position:absolute;top:10px;left:10px;font-size:.65rem;font-weight:800;letter-spacing:.1em;background:#0008;padding:5px 7px;border-radius:6px}.play{position:absolute;right:12px;bottom:12px;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--accent);font-size:1rem}
+.cardbody{padding:14px}.card h3{margin:0 0 6px;font-size:1rem}.card p{margin:0;color:var(--muted);font-size:.86rem;line-height:1.5}
+.notice{margin-top:24px;padding:15px 16px;background:var(--panel);border:1px solid var(--border);border-radius:14px;color:var(--muted);font-size:.88rem;line-height:1.6}
+footer{padding-bottom:28px;font-size:.8rem}.empty{display:none;color:var(--muted);padding:25px 0}
+@media(max-width:760px){.grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:480px){.grid{grid-template-columns:1fr}.hero{padding:20px}.tag{display:none}}
+</style></head>
+<body>
+<header><div class="nav"><div class="brand">Bhabihub<span>.</span></div><div class="tag">Your video hub</div></div></header>
+<main>
+<section class="hero"><h1>Discover videos</h1><p>A simple, mobile-friendly video hub. Search the demo cards below or replace them with your own permitted video links and thumbnails.</p></section>
+<div class="tools" aria-label="Video search and filters"><input id="search" type="search" placeholder="Search videos..." aria-label="Search videos"><button class="filter active" data-filter="all">All</button><button class="filter" data-filter="shorts">Shorts</button><button class="filter" data-filter="stories">Stories</button></div>
+<div class="head"><h2>Featured videos</h2><span id="count">3 demo cards</span></div>
+<section class="grid" id="grid">
+<article class="card" data-category="shorts"><div class="thumb">🍓<span class="play">▶</span></div><div class="cardbody"><h3>Fruit ASMR Short</h3><p>Sample card — add your own video URL to enable playback.</p></div></article>
+<article class="card" data-category="stories"><div class="thumb">🎬<span class="play">▶</span></div><div class="cardbody"><h3>Mini Story</h3><p>Sample card — replace this with your own story video.</p></div></article>
+<article class="card" data-category="shorts"><div class="thumb">🥔<span class="play">▶</span></div><div class="cardbody"><h3>Funny Food Short</h3><p>Sample card — replace this with a video you have permission to share.</p></div></article>
+</section><p class="empty" id="empty">No matching demo cards found.</p>
+<div class="notice"><strong>Demo notice:</strong> This page is a front-end template only. The sample cards do not contain real video files, a video database, advertising, or age verification. Add only videos and links you own or are authorized to share.</div>
+</main><footer>© <span id="year"></span> Bhabihub. Built as a simple GitHub Pages demo.</footer>
+<script>
+const search=document.getElementById('search'),cards=[...document.querySelectorAll('.card')],filters=[...document.querySelectorAll('.filter')],count=document.getElementById('count'),empty=document.getElementById('empty');let category='all';
+function updateCards(){const query=search.value.trim().toLowerCase();let visible=0;cards.forEach(card=>{const show=card.innerText.toLowerCase().includes(query)&&(category==='all'||card.dataset.category===category);card.style.display=show?'':'none';if(show)visible++});count.textContent=`${visible} demo card${visible===1?'':'s'}`;empty.style.display=visible?'none':'block'}
+search.addEventListener('input',updateCards);filters.forEach(button=>button.addEventListener('click',()=>{category=button.dataset.filter;filters.forEach(item=>item.classList.toggle('active',item===button));updateCards()}));document.getElementById('year').textContent=new Date().getFullYear();updateCards();
+</script></body></html>
